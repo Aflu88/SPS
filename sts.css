@@ -1,0 +1,126 @@
+.allBod{
+    background-color: black;
+    font-family: 'Orbitron', sans-serif;
+    background: radial-gradient(circle at center, #001011, #000000);
+    color: #0ff;
+    overflow: hidden;
+}
+h1.wlcm{
+     text-align: center;
+     margin-top: 40px;
+     font-size: 36px;
+}
+.computerIcon{
+    display: flex;
+    height: 100px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.myIcon{
+    display: flex;
+    height: 100px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ button{
+    padding: 10px 20px;
+    font-size: 50px;
+    margin: 10px;
+    cursor: pointer;
+    background: transparent;     
+ }
+ .myButton{
+    border: 2px solid #0ff;
+    color: #0ff;
+    box-shadow: 0 0 10px #0ff;
+    transition: 0.3s ease all;
+    border-radius: 8px;
+ }
+ .compButton{
+    border: 2px solid rgb(255, 0, 0);
+    color: rgb(255, 0, 0);
+    box-shadow: 0 0 10px rgb(255, 0, 0);
+    border-radius: 8px;
+
+ }
+ .lightBlue{
+    background-color: rgb(21, 21, 211) !important;
+ }
+ .hidden {
+  display: none;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgb(255, 1, 1);
+  color: #0ff;
+  padding: 20px 30px;
+
+  border: 2px solid #0ff;
+  font-family: monospace;
+  text-align: center;
+  z-index: 1000;
+}
+#popupResultText {
+    font-size: 32px;      
+    font-weight: bold;    
+    text-transform: uppercase;  
+    letter-spacing: 1px;
+    font-size: 40px;
+    text-shadow: 0 0 10px #0ff;
+  }
+  
+#closePopupBtn {
+  /* font-size: 14px; */
+  margin-top: 2px;
+  padding: 2px 2px;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 6px 12px;
+  border-radius: 5px;
+  box-shadow: 0 0 8px #0ff;
+}
+
+  .myButton:hover {
+    box-shadow: 0 0 20px rgb(235, 231, 6), 0 0 40px rgb(244, 248, 13);
+    transform: scale(1.1);
+  }
+  
+  .popup {
+    animation: popupIn 0.3s ease forwards;
+    border-radius: 10px;
+  }
+  
+  @keyframes popupIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -60%) scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  
+
+  
+ 
+  
+
+  
+
+/*const resultDiv = document.createElement('div');
+const scoreDiv = document.createElement('div');
+document.body.appendChild(resultDiv);
+document.body.appendChild(scoreDiv);
+
+resultDiv.style.textAlign = 'center';
+resultDiv.style.marginTop = '20px';
+scoreDiv.style.textAlign = 'center';
+scoreDiv.style.marginTop = '10px';
+scoreDiv.innerText = `Player: 0 | Computer: 0`;*/
