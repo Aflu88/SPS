@@ -1,109 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>stone paper scissor</title>
     <link rel="stylesheet" href="sts.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
 
-  </head>
-  <body class="allBod">
+</head>
+
+<body class="allBod">
     <h1 class="wlcm">To play stone paper scissor</h1>
     <div class="computerIcon">
-      <button class="compButton" id="compstone">
-        <i class="bi bi-circle"></i>
-      </button>
-      <button class="compButton" id="comppaper">
-        <i class="bi bi-file-earmark"></i>
-      </button>
-      <button class="compButton" id="compscissor">
-        <i class="bi bi-scissors"></i>
-      </button>
+        <button class="compButton" id="compstone">
+            <i class="bi bi-circle"></i>
+        </button>
+        <button class="compButton" id="comppaper">
+            <i class="bi bi-file-earmark"></i>
+        </button>
+        <button class="compButton" id="compscissor">
+            <i class="bi bi-scissors"></i>
+        </button>
     </div>
     <div class="myIcon">
-      <button class="myButton" id="stone">
-        <i class="bi bi-circle"></i>
-      </button>
-      <button class="myButton" id="paper">
-        <i class="bi bi-file-earmark"></i>
-      </button>
-      <button class="myButton" id="scissor">
-        <i class="bi bi-scissors"></i>
-      </button>
+        <button class="myButton" id="stone">
+            <i class="bi bi-circle"></i>
+        </button>
+        <button class="myButton" id="paper">
+            <i class="bi bi-file-earmark"></i>
+        </button>
+        <button class="myButton" id="scissor">
+            <i class="bi bi-scissors"></i>
+        </button>
     </div>
-    <h1 id="result"></h1>
+    <h1 id="result">
 
-    <div id="resultPopup" class="popup hidden">
-      <div id="popupResultText">Result Here</div>
-      <button id="closePopupBtn">Close</button>
+    </h1>
+    <div id="scoreBoard">
+        <h2>Score</h2>
+        <p id="scoreText">Player: 0 | Computer: 0</p>
+        <button id="playAgainBtn" style="display:none; margin-top:10px; padding:10px 20px; font-size:18px;">Play
+            Again</button>
     </div>
-  
+    <div id="overlay" class="hidden"></div>
+
+    
+    <div id="resultPopup" class="popup hidden">
+
+        <div id="popupResultText">Result Here</div>
+        <button id="closePopupBtn">Close</button>
+    </div>
+
     </div>
     <script>
       const myButtons = document.getElementsByClassName("myButton");
       const compButtons = document.getElementsByClassName("compButton");
-
+      let playerScore = 0;
+      let computerScore = 0;
+      const scoreText = document.getElementById("scoreText");
+      const playAgainBtn = document.getElementById("playAgainBtn");
+      const overlay = document.getElementById("overlay");
+      const popup = document.getElementById("resultPopup");
+      const popupText = document.getElementById("popupResultText");
+      const closeBtn = document.getElementById("closePopupBtn");
+    
+      function getChoiceIndex(id) {
+        if (id === "stone" || id === "compstone") return 0;
+        if (id === "paper" || id === "comppaper") return 1;
+        if (id === "scissor" || id === "compscissor") return 2;
+      }
+    
+      function animateComputerChoice(callback) {
+        let index = 0;
+        let cycles = 0;
+        const maxCycles = 12;
+        const intervalId = setInterval(() => {
+          for (let btn of compButtons) {
+            btn.classList.remove("computerSelected");
+          }
+          compButtons[index].classList.add("computerSelected");
+          index = (index + 1) % compButtons.length;
+          cycles++;
+    
+          if (cycles >= maxCycles) {
+            clearInterval(intervalId);
+    
+            const finalIndex = Math.floor(Math.random() * compButtons.length);
+            for (let btn of compButtons) {
+              btn.classList.remove("computerSelected");
+            }
+            compButtons[finalIndex].classList.add("computerSelected");
+    
+            callback(finalIndex);
+          }
+        }, 100);
+      }
+    
       for (let i = 0; i < myButtons.length; i++) {
         myButtons[i].addEventListener("click", function () {
-          myButtons[i].classList.add("lightBlue");
-          for (let j = 0; j < myButtons.length; j++) {
-            if (i != j) {
-              myButtons[j].classList.remove("lightBlue");
+          const playerChoiceIndex = getChoiceIndex(this.id);
+    
+          for (let btn of myButtons) {
+            btn.classList.remove("playerSelected");
+          }
+          this.classList.add("playerSelected");
+    
+          animateComputerChoice(function (computerChoiceIndex) {
+            let result = "";
+            if (playerChoiceIndex === computerChoiceIndex) {
+              result = "draw";
+            } else if (
+              (playerChoiceIndex === 0 && computerChoiceIndex === 2) || // stone > scissor
+              (playerChoiceIndex === 1 && computerChoiceIndex === 0) || // paper > stone
+              (playerChoiceIndex === 2 && computerChoiceIndex === 1)    // scissor > paper
+            ) {
+              result = "win";
+            } else {
+              result = "lose";
             }
-          }
-          const playerChoice = this.id;
-          // console.log("You chose:", playerChoice);
-
-          const randomIndex = Math.floor(Math.random() * 3);
-          const compChoiceButton = compButtons[randomIndex];
-          // console.log("Computer chose:", compChoiceButton);
-
-          compChoiceButton.classList.add("lightBlue");
-          for (let j = 0; j < compButtons.length; j++) {
-            if (randomIndex != j) {
-              compButtons[j].classList.remove("lightBlue");
+    
+            if (result === "win") {
+              playerScore++;
+            } else if (result === "lose") {
+              computerScore++;
             }
-          }
-          let result = "";
-          if (
-            (i == 0 && randomIndex == 0) ||
-            (i == 1 && randomIndex == 1) ||
-            (i == 2 && randomIndex == 2)
-          ) {
-            result = "draw";
-          } else if (
-            (randomIndex == 0 && i == 1) ||
-            (randomIndex == 1 && i == 2) ||
-            (randomIndex == 2 && i == 1)
-          ) {
-            result = "win";
-          } else {
-            result = "failed";
-          }
-          
-          
-          let resulth1 = document.getElementById("result");
-          console.log(result);
-
-          const popup = document.getElementById("resultPopup");
-          const popupText = document.getElementById("popupResultText");
-          const closeBtn = document.getElementById("closePopupBtn");
-          
-          popupText.innerText = result.toUpperCase();
-          popup.classList.remove("hidden");
-          
-          closeBtn.onclick = () => {
-            popup.classList.add("hidden");
-          };
-          
+    
+            scoreText.innerText = `Player: ${playerScore} | Computer: ${computerScore}`;
+    
+            if (playerScore === 5 || computerScore === 5) {
+              popupText.innerText = playerScore === 5 ? "YOU WON THE MATCH!" : "YOU LOST THE MATCH!";
+              popup.classList.remove("hidden");
+              overlay.classList.remove("hidden");
+              playAgainBtn.style.display = "inline-block";
+    
+              for (let btn of myButtons) {
+                btn.disabled = true;
+                btn.style.opacity = 0.5;
+                btn.style.cursor = "not-allowed";
+              }
+            }
+          });
         });
       }
+    
+      playAgainBtn.addEventListener("click", () => {
+        playerScore = 0;
+        computerScore = 0;
+        scoreText.innerText = `Player: 0 | Computer: 0`;
+        playAgainBtn.style.display = "none";
+        popup.classList.add("hidden");
+        overlay.classList.add("hidden");
+    
+        for (let btn of myButtons) {
+          btn.disabled = false;
+          btn.style.opacity = 1;
+          btn.style.cursor = "pointer";
+          btn.classList.remove("playerSelected");
+        }
+        for (let btn of compButtons) {
+          btn.classList.remove("computerSelected");
+        }
+      });
+    
+      closeBtn.addEventListener("click", () => {
+        popup.classList.add("hidden");
+        overlay.classList.add("hidden");
+      });
     </script>
-  </body>
+    
+</body>
+
 </html>
