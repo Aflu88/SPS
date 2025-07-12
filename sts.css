@@ -156,6 +156,17 @@ button {
   z-index: 900; 
   pointer-events: all;
 }
+#btnOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: transparent;
+  z-index: 800;
+  display: none;
+}
+
 .popup {
   animation: popupIn 0.3s ease forwards;
   border-radius: 10px;
