@@ -55,6 +55,7 @@
     </div>
 
     </div>
+    
     <script>
       const myButtons = document.getElementsByClassName("myButton");
       const compButtons = document.getElementsByClassName("compButton");
@@ -136,8 +137,8 @@
     
             scoreText.innerText = `Player: ${playerScore} | Computer: ${computerScore}`;
     
-            if (playerScore === 5 || computerScore === 5) {
-              popupText.innerText = playerScore === 5 ? "YOU WON THE MATCH!" : "YOU LOST THE MATCH!";
+            if (playerScore === 3 || computerScore === 3) {
+              popupText.innerText = playerScore === 3 ? "YOU WON THE MATCH!" : "YOU LOST THE MATCH!";
               popup.classList.remove("hidden");
               overlay.classList.remove("hidden");
               playAgainBtn.style.display = "inline-block";
@@ -147,6 +148,11 @@
                 btn.style.opacity = 0.5;
                 btn.style.cursor = "not-allowed";
               }
+
+              setTimeout(() => {
+                popup.classList.add("hidden");
+                overlay.classList.add("hidden");
+              },4000);
             }
           });
         });
